@@ -1,6 +1,6 @@
-# jade-cmd
+![Typing SVG](https://readme-typing-svg.herokuapp.com?color=%2349F707&size=30&lines=☣️+jade-cmd+☣️)
 
-**If you want to run your Termux/Terminal very smoothly and run without problem, then this command is for you..**
+>**If you want to run your Termux/Terminal very smoothly and run without problem, then this command is for you..**
 
 **follow the installation**
 
