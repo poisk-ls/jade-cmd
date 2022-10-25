@@ -2,7 +2,7 @@
 
 >**If you want to run your Termux/Terminal very smoothly and run without problem, then this command is for you..**
 
-**follow the installation**
+**Follow the installation process**
 
 **pkg nstallation command..**
 
@@ -111,9 +111,9 @@
 
 
 -  pip install --upgrade pip
-- termux-setup-storage
-- ls
-- exit
+-  termux-setup-storage
+-  ls
+-  exit
  then type exit and restart termux
 
 **[![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=26&pause=1000&color=F7D628&center=false&width=435&lines=...enjoy!!)](https://git.io/typing-svg)**
