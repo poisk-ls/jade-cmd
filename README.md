@@ -101,6 +101,7 @@
 -  pip3 install wordlist
 -  pip install requirements.txt
 -  pip freeze > requirements.txt
+-  pip install -r requirements.txt
 -  pip2 install -r requirements.txt
 -  pip3 install -r requirements.txt
 -  pip install module-name
@@ -114,8 +115,8 @@
 -  pip install --upgrade pip
 -  termux-setup-storage
 -  ls
--  exit
- then type exit and restart termux
+-  **(done your all setup)**
+
 
 **[![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=26&pause=1000&color=F7D628&center=false&width=435&lines=...enjoy!!)](https://git.io/typing-svg)**
 #### ____________________________________
