@@ -4,8 +4,9 @@
 
 **Follow the installation process**
 
-**pkg nstallation command..**
 
+### List of All the Termux Basic Commands
+>**pkg nstallation cmd**
 - termux-change-repo
 - pkg update
 - pkg upgrade
@@ -51,7 +52,7 @@
 - pkg install golang 
 
 
-**pip nstallation command..**
+>**pip installation command..**
 
 -  pip install requests
 -  pip2 install requests
