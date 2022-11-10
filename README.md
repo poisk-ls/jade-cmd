@@ -31,6 +31,7 @@
 - pkg install clang
 - pkg install zsh
 - pkg install termux-api
+- pkg install termux-tools
 - pkg install wget
 - pkg install cowsay
 - pkg install openssh
@@ -51,6 +52,8 @@
 - pkg install ruby
 - pkg install fish
 - pkg install golang 
+- pkg install gatling
+- pkg install parallel
 
 
 >**pip installation command..**
@@ -70,6 +73,15 @@
 -  pip install lolcat
 -  pip2 install lolcat
 -  pip3 install lolcat
+-  pip install futures
+-  pip2 install futures
+-  pip3 install futures
+-  pip install rich
+-  pip2 install rich
+-  pip3 install rich
+-  pip install npm
+-  pip2 install npm
+-  pip3 install npm
 -  pip install bs4
 -  pip2 install bs4
 -  pip3 install bs4
