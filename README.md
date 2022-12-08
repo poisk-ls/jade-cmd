@@ -128,9 +128,13 @@
 
 
 -  pip install --upgrade pip
+-  pip2 install --upgrade pip
 -  termux-setup-storage
 -  ls
--  **(done your all setup)**
+
+```diff
+- (done your all setup) -
+```
 
 
 **[![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=26&pause=1000&color=F7D628&center=false&width=435&lines=...enjoy!!)](https://git.io/typing-svg)**
