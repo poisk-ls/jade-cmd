@@ -2,7 +2,9 @@
 
 >**If you want to run your Termux/Terminal very smoothly and run without problem, then this command is for you..**
 
-**Follow the installation process**
+```diff
+- Follow the installation process!!
+```
 
 
 ### List of All the Termux Basic Commands
