@@ -140,7 +140,7 @@
 **[![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=26&pause=1000&color=F7D628&center=false&width=435&lines=...enjoy!!)](https://git.io/typing-svg)**
 #### ____________________________________
 >
->**Follow for more: https://github.com/poisk-ls**
+>**Follow for more: <a href="https://github.com/poisk-ls">poisk-ls </a>**
 >
 >**Direct inbox:**
 ><a href="https://m.me/speedy.mmsc80.thugs" target="_blank"><img src="https://img.shields.io/badge/Messenger-speedy.mmsc80.thugs-red?style=for-the-badge&logo=messenger"></a>
