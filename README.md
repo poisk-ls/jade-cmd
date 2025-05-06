@@ -14,132 +14,64 @@ or follow the manual process!
 ```diff
 - Follow the installation process!!
 ```
+### Termux Installation Commands
 
+| PKG Command | PIP Command |
+|-------------|-------------|
+| `termux-change-repo` | `pip install requests` |
+| `pkg update` | `pip2 install requests` |
+| `pkg upgrade` | `pip3 install requests` |
+| `pkg install python` | `pip install mechanize` |
+| `pkg install python2` | `pip2 install mechanize` |
+| `pkg install python3` | `pip3 install mechanize` |
+| `pkg install git` | `pip install wget` |
+| `pkg install zip` | `pip2 install wget` |
+| `pkg install npm` | `pip3 install wget` |
+| `pkg install unzip` | `pip install wheel` |
+| `pkg install curl` | `pip2 install wheel` |
+| `pkg install perl` | `pip3 install wheel` |
+| `pkg install toilet` | `pip install lolcat` |
+| `pkg install gatling` | `pip2 install lolcat` |
+| `pkg install micro` | `pip3 install lolcat` |
+| `pkg install nano` | `pip install futures` |
+| `pkg install vim` | `pip2 install futures` |
+| `pkg install clang` | `pip3 install futures` |
+| `pkg install bash` | `pip install rich` |
+| `pkg install figlet` | `pip2 install rich` |
+| `pkg install php` | `pip3 install rich` |
+| `pkg install zsh` | `pip install npm` |
+| `pkg install termux-api` | `pip2 install npm` |
+| `pkg install termux-tools` | `pip3 install npm` |
+| `pkg install wget` | `pip install bs4` |
+| `pkg install cowsay` | `pip2 install bs4` |
+| `pkg install openssh` | `pip3 install bs4` |
+| `pkg install openssl` | `pip install colorama` |
+| `pkg install ffmpeg` | `pip2 install colorama` |
+| `pkg install parallel` | `pip3 install colorama` |
+| `pkg install nodejs` | `pip install flask` |
+| `pkg install tor` | `pip2 install flask` |
+| `pkg install man` | `pip3 install flask` |
+| `pkg install neofetch` | `pip freeze > requirements.txt` |
+| `pkg install sl` | `pip install -r requirements.txt` |
+| `pkg install swift` | `pip2 install -r requirements.txt` |
+| `pkg install lua` | `pip3 install -r requirements.txt` |
+| `pkg install nmap` | |
+| `pkg install tar` | |
+| `pkg install cmatrix` | |
+| `pkg install chroot` | |
+| `pkg install ruby` | |
+| `pkg install fish` | |
+| `pkg install golang` | |
+| `pkg install python-pip` | |
 
-### List of All the Termux Basic Commands
->**pkg nstallation cmd**
-- termux-change-repo
-- pkg update
-- pkg upgrade
-- pkg install python
-- pkg install python2
-- pkg install python3
-- pkg install git
-- pkg install zip
-- pkg install npm
-- pkg install unzip
-- pkg install curl
-- pkg install perl
-- pkg install toilet
-- pkg install gatling
-- pkg install micro
-- pkg install nano
-- pkg install vim
-- pkg install clang
-- pkg install bash
-- pkg install figlet
-- pkg install php
-- pkg install clang
-- pkg install zsh
-- pkg install termux-api
-- pkg install termux-tools
-- pkg install wget
-- pkg install cowsay
-- pkg install openssh
-- pkg install openssl
-- pkg install ffmpeg
-- pkg install parallel
-- pkg install nodejs
-- pkg install tor
-- pkg install man
-- pkg install neofetch
-- pkg install sl
-- pkg install swift
-- pkg install lua
-- pkg install nmap
-- pkg install tar
-- pkg install cmatrix 
-- pkg install chroot
-- pkg install ruby
-- pkg install fish
-- pkg install golang 
-- pkg install gatling
-- pkg install parallel
-- pkg install python-pip
-
->**pip installation command..**
-
--  pip install requests
--  pip2 install requests
--  pip3 install requests
--  pip install mechanize
--  pip2 install mechanize 
--  pip3 install mechanize
--  pip install wget
--  pip2 install wget
--  pip3 install wget
--  pip install wheel
--  pip2 install wheel
--  pip3 install wheel
--  pip install lolcat
--  pip2 install lolcat
--  pip3 install lolcat
--  pip install futures
--  pip2 install futures
--  pip3 install futures
--  pip install rich
--  pip2 install rich
--  pip3 install rich
--  pip install npm
--  pip2 install npm
--  pip3 install npm
--  pip install bs4
--  pip2 install bs4
--  pip3 install bs4
--  pip install so
--  pip2 install so
--  pip3 install so
--  pip install uuid
--  pip2 install uuid
--  pip3 install uuid
--  pip install colorama
--  pip2 install colorama
--  pip3 install colorama
--  pip install sockets
--  pip2 install sockets
--  pip3 install sockets
--  pip install pysocks
--  pip2 install pysocks
--  pip3 install pysocks
--  pip install threaded
--  pip2 install threaded
--  pip3 install threaded
--  pip install regex
--  pip2 install regex
--  pip3 install regex
--  pip install random
--  pip2 install random
--  pip3 install random
--  pip install wordlist
--  pip2 install wordlist
--  pip3 install wordlist
--  pip install requirements.txt
--  pip freeze > requirements.txt
--  pip install -r requirements.txt
--  pip2 install -r requirements.txt
--  pip3 install -r requirements.txt
--  pip install module-name
--  pip2 install module-name
--  pip3 install module-name
--  pip install flask
--  pip2 install flask
--  pip3 install flask
-
-
--  pip install --upgrade pip
--  pip2 install --upgrade pip
--  termux-setup-storage
--  ls
+```
+- Upgrade Python 
+ pip2 install --upgrade pip
+```
+```
+- Set Permission 
+ termux-setup-storage
+```
 
 ```diff
 - (done your all setup) -
