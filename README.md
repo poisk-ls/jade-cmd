@@ -1,5 +1,7 @@
 ![Typing SVG](https://readme-typing-svg.herokuapp.com?color=%2349F707&size=30&lines=☣️+jade-cmd+☣️)
 
+![view](https://github.com/poisk-ls/jade-cmd/blob/main/.github/workflows/Screenshot_20250728-125056_1.jpg)
+
 [Visit Site!](https://jade-cmd.vercel.app/)
 
 >**If you want to run your Termux/Terminal very smoothly and run without any problem, will this command is for you..**
