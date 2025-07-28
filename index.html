@@ -1,1040 +1,312 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Termux Package Installer</title>
-    
-     <!-- Ubuntu Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
-    
-    <!-- jQuery Mobile CSS -->
-    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
-
-    <!-- SweetAlert2 CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    
-    <!-- jQuery and jQuery Mobile JS -->
-    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-    
-    <!-- SweetAlert2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <style>
-    *{
-      font-family: 'Ubuntu Mono', monospace!important;
-      color: #ff0000;
-      font-weight: bold!important;
-      text-shadow: none!important;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title> PKG & PIP Cheat Sheet</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap">
+  <style>
+    :root {
+      --main-bg: #000;
+      --neon-blue: #0ff;
+      --neon-pink: #f0f;
+      --neon-green: #0f0;
+      --neon-yellow: #ff0;
+      --alert-red: #ff003c;
+      --accent: #f0f;
     }
-        .ui-content {
-            padding: 0;
-        }
-        .command-table {
-            width: 100%;
-            margin-bottom: 0;
-            border-collapse: collapse;
-            box-shadow: none;
-        }
-        .table-header {
-            background-color: #000!important;
-            color: #00ff00!important;
-            padding: 12px 15px;
-            text-align: left;
-            font-size: 1.1em;
-            text-shadow: 1px 0 0 #ff0000!important;
-        }
-        .command-row {
-            border-bottom: 1px solid #e0e0e0;
-            background-color: white;
-        }
-        .command-row:last-child {
-            border-bottom: none;
-        }
-        .command-cell {
-            padding: 12px 15px;
-            font-family: 'Courier New', monospace;
-            word-break: break-all;
-        }
-        .copy-cell {
-            width: 100px;
-            text-align: center;
-        }
-        .copy-btn {
-            padding: 6px 12px;
-            background-color: #000!important;
-            color: #00ff00!important;
-            border: 1px solid red!important;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            text-shadow: none!important;
-        }
-        .copy-btn:hover {
-            background-color: #ff0000!important;
-            border: 1px double #00ff00!important;
-        }
-        .ui-footer {
-            text-align: center;
-            font-size: 12px;
-            background-color: #000!important;
-            text-shadow: none!important;
-            border:1px solid red!important;
-        }
-        .ui-navbar {
-            background-color: #000;
-        }
-        .ui-navbar .ui-btn {
-            background-color: transparent;
-            border-color: transparent;
-            color: #ff0000;
-            text-shadow: none!important;
-        }
-        .ui-navbar .ui-btn-active {
-            background-color: #ff0000!important;
-            border-color: #ff0000!important;
-            color: #00ff00!important;
-        }
-        .tab-content {
-            padding: 15px;
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-            margin-bottom: 60px; /* Add space for fixed footer */
-        }
-        #all-commands-tab {
-            margin-top: 20px;
-            border-top: 2px solid #3498db;
-            padding-top: 20px;
-        }
-        .copy-all-btn {
-            margin: 15px auto;
-            display: block;
-            background-color: #000!important;
-            color: #ff0000!important;
-            text-shadow: none!important;
-        }
-        .copy-all-btn:hover{
-          color:#00ff00!important;
-          border: 1px inset #ff0000!important;
-        }
-        #poisk{
-          color:#ff0000!important;
-          background: red!important;
-          border: 1px solid red!important;
-          font-size: 14px!important;
-        }
-        .iconpoisk{
-          text-align: center!important;
-          margin-left: 90px!important;
-        }
-        ul{
-          list-style-type: none!important;
-        }
-    </style>
+    body {
+      background: var(--main-bg);
+      color: var(--neon-blue);
+      font-family: 'Share Tech Mono', monospace;
+      margin: 0;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+    .matrix-bg {
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      top: 0; left: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: transparent;
+    }
+    .suspicious-header {
+      text-align: center;
+      margin-top: 2.2em;
+      margin-bottom: 0.7em;
+      font-size: 2.5em;
+      color: var(--neon-blue);
+      letter-spacing: 0.12em;
+      text-shadow: 0 0 18px var(--neon-pink), 0 0 4px #fff;
+      position: relative;
+      animation: crazyPulse 1.2s infinite alternate;
+      filter: drop-shadow(0 0 9px var(--neon-blue));
+      text-transform: uppercase;
+      cursor: pointer;
+      user-select: none;
+    }
+    @keyframes crazyPulse {
+      0% { filter: drop-shadow(0 0 9px var(--neon-blue)); }
+      100% { filter: drop-shadow(0 0 27px var(--neon-pink)); }
+    }
+    .neon-bar {
+      width: 75vw;
+      margin: 1.5em auto 1.4em auto;
+      height: 4px;
+      border-radius: 2px;
+      background: linear-gradient(90deg,var(--neon-blue),var(--neon-pink),var(--neon-green),var(--neon-yellow));
+      box-shadow: 0 0 14px var(--neon-pink), 0 0 10px var(--neon-blue);
+      animation: glitchBar 1.1s infinite alternate;
+    }
+    @keyframes glitchBar {
+      0% { filter: blur(0.5px);}
+      100% { filter: blur(3px);}
+    }
+    .crazy-table-wrap {
+      width: 97vw;
+      max-width: 900px;
+      margin: 2em auto 0 auto;
+      overflow-x: auto;
+      border-radius: 12px;
+      box-shadow: 0 0 32px var(--neon-pink)5, 0 0 18px var(--neon-blue)7;
+      background: rgba(10,10,22,.93);
+      padding: 1.2em 0.5em 2.3em 0.5em;
+      position: relative;
+    }
+    table.suspicious-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 1em;
+      font-family: 'Share Tech Mono', monospace;
+      background: transparent;
+      color: var(--neon-blue);
+      z-index: 2;
+    }
+    table.suspicious-table th, table.suspicious-table td {
+      border: 1.5px solid var(--neon-pink);
+      padding: 0.7em 1.1em;
+      background: rgba(20, 0, 40, 0.92);
+      transition: background 0.2s;
+      text-align: left;
+      font-size: 1em;
+    }
+    table.suspicious-table th {
+      color: var(--neon-yellow);
+      background: rgba(20, 0, 40, 0.99);
+      font-size: 1.13em;
+      letter-spacing: 0.08em;
+      text-shadow: 0 0 7px var(--neon-pink);
+      border-bottom: 3.5px double var(--neon-blue);
+    }
+    table.suspicious-table tr:hover td {
+      background: rgba(0,255,255,0.16);
+      color: var(--neon-yellow);
+      filter: brightness(1.2);
+      text-shadow: 0 0 5px var(--neon-pink);
+    }
+    .crazy-table-wrap::before {
+      content: "⚡️";
+      font-size: 3.5em;
+      color: var(--neon-pink);
+      position: absolute;
+      left: -0.5em;
+      top: -0.7em;
+      animation: spinIn 1.7s infinite linear;
+      z-index: 4;
+      pointer-events: none;
+    }
+    .crazy-table-wrap::after {
+      content: "⚠️";
+      font-size: 2.5em;
+      color: var(--neon-yellow);
+      position: absolute;
+      right: -0.7em;
+      top: -0.7em;
+      animation: spinIn 1.2s infinite linear reverse;
+      z-index: 4;
+      pointer-events: none;
+    }
+    @keyframes spinIn {
+      0% {transform:rotate(0deg);}
+      100%{transform:rotate(360deg);}
+    }
+    .tips-section {
+      background: rgba(0,0,0,0.88);
+      border-radius: 10px;
+      margin: 2.2em auto 2.5em auto;
+      max-width: 720px;
+      padding: 1.5em 1.2em;
+      color: var(--neon-yellow);
+      font-size: 1.07em;
+      box-shadow: 0 0 16px var(--neon-pink)7;
+      border: 1.5px dashed var(--neon-pink);
+    }
+    .tips-section code {
+      color: var(--neon-blue);
+      background: #111;
+      padding: 0.3em 0.7em;
+      border-radius: 5px;
+      font-size: 1.07em;
+      margin: 0 0.1em;
+      box-shadow: 0 0 1px var(--neon-pink)6;
+      user-select: all;
+    }
+    .crazy-warning {
+      text-align: center;
+      background: var(--alert-red);
+      color: #fff;
+      font-family: inherit;
+      padding: 0.7em 1em;
+      border-radius: 7px;
+      font-size: 1.09em;
+      letter-spacing: 0.07em;
+      box-shadow: 0 0 14px var(--alert-red)8;
+      margin: 2em auto 1em auto;
+      max-width: 500px;
+      animation: crazyWarn 1.05s infinite alternate;
+      text-shadow: 0 0 3px #fff;
+    }
+    @keyframes crazyWarn {
+      0% { filter: brightness(1.1);}
+      100% { filter: brightness(0.8);}
+    }
+    /* Matrix BG */
+    @media (max-width: 900px) {
+      .crazy-table-wrap {width:99vw;}
+    }
+    @media (max-width:600px) {
+      .suspicious-header {font-size: 1.2em;}
+      .crazy-table-wrap {padding:0.7em 0.1em 1.3em 0.1em;}
+      .tips-section {padding:1em 0.4em;}
+      .crazy-warning {font-size:0.96em;}
+      table.suspicious-table th, table.suspicious-table td {padding:0.5em 0.2em;}
+    }
+  </style>
 </head>
 <body>
-    <div data-role="page" id="main-page">
-        <div data-role="header" style="background-color: #000;border:1px solid red">
-            <h1 style="color: #00ff00;text-shadow:none;">Termux Cheatsheet
-            <br />command</h1>
-        </div>
-        
-        <!-- Navbar Tabs -->
-        <div data-role="navbar" class="ui-navbar">
-            <ul>
-                <li><a href="#pkg-tab" class="ui-btn-active">PKG</a></li>
-                <li><a href="#pip-tab">PIP</a></li>
-                <li><a href="#all-tab">All</a></li>
-            </ul>
-        </div>
-        
-        <div role="main" class="ui-content">
-            <!-- Package Installation Tab -->
-            <div id="pkg-tab" class="tab-content active">
-                <table class="command-table">
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install python</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install python">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install python2</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install python2">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install python3</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install python3">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install git</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install git">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install zip</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install zip">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install npm</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install npm">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install unzip</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install unzip">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install curl</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install curl">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install perl</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install perl">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install toilet</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install toilet">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install micro</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install micro">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install nano</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install nano">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install vim</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install vim">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install clang</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install clang">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install bash</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install bash">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install figlet</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install figlet">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install php</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install php">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install zsh</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install zsh">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install termux-api</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install termux-api">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install termux-tools</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install termux-tools">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install wget</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install wget">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install cowsay</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install cowsay">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install openssh</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install openssh">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install openssl</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install openssl">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install ffmpeg</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install ffmpeg">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install nodejs</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install nodejs">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install tor</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install tor">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install man</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install man">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install neofetch</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install neofetch">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install sl</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install sl">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install swift</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install swift">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install lua</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install lua">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install nmap</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install nmap">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install tar</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install tar">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install cmatrix</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install cmatrix">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install chroot</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install chroot">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install ruby</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install ruby">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install fish</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install fish">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install golang</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install golang">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install gatling</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install gatling">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install parallel</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install parallel">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg install python-pip</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg install python-pip">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg update</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg update">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pkg upgrade</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pkg upgrade">Copy</button></td>
-                    </tr>
-                </table>
-            </div>
-            
-            <!-- PIP Installation Tab -->
-            <div id="pip-tab" class="tab-content">
-                <h3 style="padding-left: 15px;">Requests</h3>
-                <table class="command-table">
-                    <tr class="command-row">
-                        <td class="command-cell">pip install requests</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip install requests">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pip2 install requests</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip2 install requests">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pip3 install requests</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip3 install requests">Copy</button></td>
-                    </tr>
-                </table>
-                
-                <h3 style="padding-left: 15px;">Mechanize</h3>
-                <table class="command-table">
-                    <tr class="command-row">
-                        <td class="command-cell">pip install mechanize</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip install mechanize">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pip2 install mechanize</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip2 install mechanize">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pip3 install mechanize</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip3 install mechanize">Copy</button></td>
-                    </tr>
-                </table>
-                
-                <h3 style="padding-left: 15px;">Wget</h3>
-                <table class="command-table">
-                    <tr class="command-row">
-                        <td class="command-cell">pip install wget</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip install wget">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pip2 install wget</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip2 install wget">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pip3 install wget</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip3 install wget">Copy</button></td>
-                    </tr>
-                </table>
-                
-                <h3 style="padding-left: 15px;">Wheel</h3>
-                <table class="command-table">
-                    <tr class="command-row">
-                        <td class="command-cell">pip install wheel</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip install wheel">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pip2 install wheel</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip2 install wheel">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pip3 install wheel</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip3 install wheel">Copy</button></td>
-                    </tr>
-                </table>
-                
-                <h3 style="padding-left: 15px;">Lolcat</h3>
-                <table class="command-table">
-                    <tr class="command-row">
-                        <td class="command-cell">pip install lolcat</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip install lolcat">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pip2 install lolcat</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip2 install lolcat">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pip3 install lolcat</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip3 install lolcat">Copy</button></td>
-                    </tr>
-                </table>
-                
-                <h3 style="padding-left: 15px;">Futures</h3>
-                <table class="command-table">
-                    <tr class="command-row">
-                        <td class="command-cell">pip install futures</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip install futures">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pip2 install futures</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip2 install futures">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pip3 install futures</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip3 install futures">Copy</button></td>
-                    </tr>
-                </table>
-                
-                <h3 style="padding-left: 15px;">Rich</h3>
-                <table class="command-table">
-                    <tr class="command-row">
-                        <td class="command-cell">pip install rich</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip install rich">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pip2 install rich</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip2 install rich">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pip3 install rich</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip3 install rich">Copy</button></td>
-                    </tr>
-                </table>
-                
-                <h3 style="padding-left: 15px;">NPM</h3>
-                <table class="command-table">
-                    <tr class="command-row">
-                        <td class="command-cell">pip install npm</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip install npm">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pip2 install npm</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip2 install npm">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pip3 install npm</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip3 install npm">Copy</button></td>
-                    </tr>
-                </table>
-                
-                <h3 style="padding-left: 15px;">BeautifulSoup</h3>
-                <table class="command-table">
-                    <tr class="command-row">
-                        <td class="command-cell">pip install bs4</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip install bs4">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pip2 install bs4</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip2 install bs4">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pip3 install bs4</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip3 install bs4">Copy</button></td>
-                    </tr>
-                </table>
-                
-                <h3 style="padding-left: 15px;">StackOverflow</h3>
-                <table class="command-table">
-                    <tr class="command-row">
-                        <td class="command-cell">pip install so</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip install so">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pip2 install so</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip2 install so">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pip3 install so</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip3 install so">Copy</button></td>
-                    </tr>
-                </table>
-                
-                <h3 style="padding-left: 15px;">UUID</h3>
-                <table class="command-table">
-                    <tr class="command-row">
-                        <td class="command-cell">pip install uuid</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip install uuid">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pip2 install uuid</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip2 install uuid">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pip3 install uuid</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip3 install uuid">Copy</button></td>
-                    </tr>
-                </table>
-                
-                <h3 style="padding-left: 15px;">Colorama</h3>
-                <table class="command-table">
-                    <tr class="command-row">
-                        <td class="command-cell">pip install colorama</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip install colorama">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pip2 install colorama</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip2 install colorama">Copy</button></td>
-                    </tr>
-                    <tr class="command-row">
-                        <td class="command-cell">pip3 install colorama</td>
-                        <td class="copy-cell"><button class="copy-btn" data-command="pip3 install colorama">Copy</button></td>
-                    </tr>
-                </table>
-            </div>
-            
-            <!-- All Commands Tab -->
-            <div id="all-tab" class="tab-content">
-                <table class="command-table">
-                    <thead>
-                        <tr>
-                            <th class="table-header">Command</th>
-                            <th class="table-header">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Package Commands -->
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install python</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install python">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install python2</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install python2">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install python3</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install python3">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install git</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install git">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install zip</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install zip">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install npm</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install npm">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install unzip</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install unzip">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install curl</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install curl">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install perl</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install perl">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install toilet</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install toilet">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install micro</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install micro">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install nano</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install nano">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install vim</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install vim">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install clang</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install clang">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install bash</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install bash">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install figlet</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install figlet">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install php</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install php">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install zsh</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install zsh">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install termux-api</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install termux-api">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install termux-tools</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install termux-tools">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install wget</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install wget">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install cowsay</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install cowsay">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install openssh</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install openssh">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install openssl</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install openssl">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install ffmpeg</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install ffmpeg">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install nodejs</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install nodejs">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install tor</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install tor">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install man</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install man">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install neofetch</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install neofetch">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install sl</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install sl">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install swift</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install swift">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install lua</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install lua">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install nmap</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install nmap">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install tar</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install tar">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install cmatrix</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install cmatrix">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install chroot</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install chroot">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install ruby</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install ruby">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install fish</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install fish">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install golang</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install golang">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install gatling</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install gatling">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install parallel</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install parallel">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg install python-pip</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg install python-pip">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg update</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg update">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pkg upgrade</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pkg upgrade">Copy</button></td>
-                        </tr>
-                        
-                        <!-- PIP Commands -->
-                        <tr class="command-row">
-                            <td class="command-cell">pip install requests</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip install requests">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip2 install requests</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip2 install requests">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip3 install requests</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip3 install requests">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip install mechanize</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip install mechanize">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip2 install mechanize</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip2 install mechanize">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip3 install mechanize</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip3 install mechanize">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip install wget</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip install wget">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip2 install wget</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip2 install wget">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip3 install wget</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip3 install wget">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip install wheel</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip install wheel">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip2 install wheel</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip2 install wheel">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip3 install wheel</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip3 install wheel">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip install lolcat</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip install lolcat">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip2 install lolcat</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip2 install lolcat">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip3 install lolcat</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip3 install lolcat">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip install futures</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip install futures">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip2 install futures</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip2 install futures">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip3 install futures</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip3 install futures">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip install rich</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip install rich">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip2 install rich</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip2 install rich">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip3 install rich</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip3 install rich">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip install npm</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip install npm">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip2 install npm</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip2 install npm">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip3 install npm</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip3 install npm">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip install bs4</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip install bs4">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip2 install bs4</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip2 install bs4">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip3 install bs4</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip3 install bs4">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip install so</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip install so">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip2 install so</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip2 install so">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip3 install so</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip3 install so">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip install uuid</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip install uuid">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip2 install uuid</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip2 install uuid">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip3 install uuid</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip3 install uuid">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip install colorama</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip install colorama">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip2 install colorama</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip2 install colorama">Copy</button></td>
-                        </tr>
-                        <tr class="command-row">
-                            <td class="command-cell">pip3 install colorama</td>
-                            <td class="copy-cell"><button class="copy-btn" data-command="pip3 install colorama">Copy</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <button id="copy-all-btn" class="ui-btn ui-btn-b ui-corner-all copy-all-btn">Copy All Commands</button>
-            </div>
-        </div>
-        
-        <div data-role="footer" class="ui-footer">
-            <p>Made by poisk-ls with &hearts; <a href="#" class="ui-btn ui-shadow ui-corner-all ui-icon-delete ui-btn-icon-notext" id="poisk" onclick="showAbout()">Delete</a></p>
-        </div>
-    </div>
+  <div class="matrix-bg"></div>
+  <div class="suspicious-header" id="suspiciousHeader"> PKG & PIP Cheat Sheet</div>
+  <div class="neon-bar"></div>
+  <div class="crazy-warning">
+    <span>⚠️ Use at your own risk. <b>Commands may seem... !!!!.</b> ⚠️</span>
+  </div>
+  <div class="crazy-table-wrap">
+    <table class="suspicious-table">
+      <thead>
+        <tr>
+          <th>PKG Command</th>
+          <th>PIP Command</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><code>termux-change-repo</code></td><td><code>pip install requests</code></td></tr>
+        <tr><td><code>pkg update</code></td><td><code>pip2 install requests</code></td></tr>
+        <tr><td><code>pkg upgrade</code></td><td><code>pip3 install requests</code></td></tr>
+        <tr><td><code>pkg install python</code></td><td><code>pip install mechanize</code></td></tr>
+        <tr><td><code>pkg install python2</code></td><td><code>pip2 install mechanize</code></td></tr>
+        <tr><td><code>pkg install python3</code></td><td><code>pip3 install mechanize</code></td></tr>
+        <tr><td><code>pkg install git</code></td><td><code>pip install wget</code></td></tr>
+        <tr><td><code>pkg install zip</code></td><td><code>pip2 install wget</code></td></tr>
+        <tr><td><code>pkg install npm</code></td><td><code>pip3 install wget</code></td></tr>
+        <tr><td><code>pkg install unzip</code></td><td><code>pip install wheel</code></td></tr>
+        <tr><td><code>pkg install curl</code></td><td><code>pip2 install wheel</code></td></tr>
+        <tr><td><code>pkg install perl</code></td><td><code>pip3 install wheel</code></td></tr>
+        <tr><td><code>pkg install toilet</code></td><td><code>pip install lolcat</code></td></tr>
+        <tr><td><code>pkg install gatling</code></td><td><code>pip2 install lolcat</code></td></tr>
+        <tr><td><code>pkg install micro</code></td><td><code>pip3 install lolcat</code></td></tr>
+        <tr><td><code>pkg install nano</code></td><td><code>pip install futures</code></td></tr>
+        <tr><td><code>pkg install vim</code></td><td><code>pip2 install futures</code></td></tr>
+        <tr><td><code>pkg install clang</code></td><td><code>pip3 install futures</code></td></tr>
+        <tr><td><code>pkg install bash</code></td><td><code>pip install rich</code></td></tr>
+        <tr><td><code>pkg install figlet</code></td><td><code>pip2 install rich</code></td></tr>
+        <tr><td><code>pkg install php</code></td><td><code>pip3 install rich</code></td></tr>
+        <tr><td><code>pkg install zsh</code></td><td><code>pip install npm</code></td></tr>
+        <tr><td><code>pkg install termux-api</code></td><td><code>pip2 install npm</code></td></tr>
+        <tr><td><code>pkg install termux-tools</code></td><td><code>pip3 install npm</code></td></tr>
+        <tr><td><code>pkg install wget</code></td><td><code>pip install bs4</code></td></tr>
+        <tr><td><code>pkg install cowsay</code></td><td><code>pip2 install bs4</code></td></tr>
+        <tr><td><code>pkg install openssh</code></td><td><code>pip3 install bs4</code></td></tr>
+        <tr><td><code>pkg install openssl</code></td><td><code>pip install colorama</code></td></tr>
+        <tr><td><code>pkg install ffmpeg</code></td><td><code>pip2 install colorama</code></td></tr>
+        <tr><td><code>pkg install parallel</code></td><td><code>pip3 install colorama</code></td></tr>
+        <tr><td><code>pkg install nodejs</code></td><td><code>pip install flask</code></td></tr>
+        <tr><td><code>pkg install tor</code></td><td><code>pip2 install flask</code></td></tr>
+        <tr><td><code>pkg install man</code></td><td><code>pip3 install flask</code></td></tr>
+        <tr><td><code>pkg install neofetch</code></td><td><code>pip freeze &gt; requirements.txt</code></td></tr>
+        <tr><td><code>pkg install sl</code></td><td><code>pip install -r requirements.txt</code></td></tr>
+        <tr><td><code>pkg install swift</code></td><td><code>pip2 install -r requirements.txt</code></td></tr>
+        <tr><td><code>pkg install lua</code></td><td><code>pip3 install -r requirements.txt</code></td></tr>
+        <tr><td><code>pkg install nmap</code></td><td></td></tr>
+        <tr><td><code>pkg install tar</code></td><td></td></tr>
+        <tr><td><code>pkg install cmatrix</code></td><td></td></tr>
+        <tr><td><code>pkg install chroot</code></td><td></td></tr>
+        <tr><td><code>pkg install ruby</code></td><td></td></tr>
+        <tr><td><code>pkg install fish</code></td><td></td></tr>
+        <tr><td><code>pkg install golang</code></td><td></td></tr>
+        <tr><td><code>pkg install python-pip</code></td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tips-section">
+    <b>Upgrade Python:</b>
+    <pre><code>pip2 install --upgrade pip</code></pre>
+    <b>Set Permission:</b>
+    <pre><code>termux-setup-storage</code></pre>
+  </div>
+  <script>
+    // Matrix BG
+    const canvas = document.createElement('canvas');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    canvas.style.position = "fixed";
+    canvas.style.top = 0;
+    canvas.style.left = 0;
+    canvas.style.zIndex = 1;
+    canvas.style.pointerEvents = "none";
+    document.querySelector('.matrix-bg').appendChild(canvas);
 
-    <script>
-        $(document).on("pagecreate", "#main-page", function() {
-            // Tab switching functionality
-            $(".ui-navbar a").on("click", function(e) {
-                e.preventDefault();
-                var target = $(this).attr("href");
-                
-                // Update active tab
-                $(".ui-navbar a").removeClass("ui-btn-active");
-                $(this).addClass("ui-btn-active");
-                
-                // Show target tab content
-                $(".tab-content").removeClass("active");
-                $(target).addClass("active");
-            });
-            
-            // Single command copy functionality
-            $(".copy-btn").on("click", function() {
-                var command = $(this).data("command");
-                
-                // Create temporary element for copy
-                var $temp = $("<textarea>");
-                $("body").append($temp);
-                $temp.val(command).select();
-                document.execCommand("copy");
-                $temp.remove();
-                
-                // Show success message
-                Swal.fire({
-                    title: 'Copied!',
-                    text: 'Successfully Copy: ' + command,
-                    icon: 'success',
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#ff0000',
-                });
-            });
-            
-    
-            // Copy all commands functionality
-            $("#copy-all-btn").on("click", function() {
-                var allCommands = [
-                    // Package commands
-                    "pkg install python",
-                    "pkg install python2",
-                    "pkg install python3",
-                    "pkg install git",
-                    "pkg install zip",
-                    "pkg install npm",
-                    "pkg install unzip",
-                    "pkg install curl",
-                    "pkg install perl",
-                    "pkg install toilet",
-                    "pkg install micro",
-                    "pkg install nano",
-                    "pkg install vim",
-                    "pkg install clang",
-                    "pkg install bash",
-                    "pkg install figlet",
-                    "pkg install php",
-                    "pkg install zsh",
-                    "pkg install termux-api",
-                    "pkg install termux-tools",
-                    "pkg install wget",
-                    "pkg install cowsay",
-                    "pkg install openssh",
-                    "pkg install openssl",
-                    "pkg install ffmpeg",
-                    "pkg install nodejs",
-                    "pkg install tor",
-                    "pkg install man",
-                    "pkg install neofetch",
-                    "pkg install sl",
-                    "pkg install swift",
-                    "pkg install lua",
-                    "pkg install nmap",
-                    "pkg install tar",
-                    "pkg install cmatrix",
-                    "pkg install chroot",
-                    "pkg install ruby",
-                    "pkg install fish",
-                    "pkg install golang",
-                    "pkg install gatling",
-                    "pkg install parallel",
-                    "pkg install python-pip",
-                    "pkg update",
-                    "pkg upgrade",
-                    
-                    // PIP commands
-                    "pip install requests",
-                    "pip2 install requests",
-                    "pip3 install requests",
-                    "pip install mechanize",
-                    "pip2 install mechanize",
-                    "pip3 install mechanize",
-                    "pip install wget",
-                    "pip2 install wget",
-                    "pip3 install wget",
-                    "pip install wheel",
-                    "pip2 install wheel",
-                    "pip3 install wheel",
-                    "pip install lolcat",
-                    "pip2 install lolcat",
-                    "pip3 install lolcat",
-                    "pip install futures",
-                    "pip2 install futures",
-                    "pip3 install futures",
-                    "pip install rich",
-                    "pip2 install rich",
-                    "pip3 install rich",
-                    "pip install npm",
-                    "pip2 install npm",
-                    "pip3 install npm",
-                    "pip install bs4",
-                    "pip2 install bs4",
-                    "pip3 install bs4",
-                    "pip install so",
-                    "pip2 install so",
-                    "pip3 install so",
-                    "pip install uuid",
-                    "pip2 install uuid",
-                    "pip3 install uuid",
-                    "pip install colorama",
-                    "pip2 install colorama",
-                    "pip3 install colorama"
-                ].join("\n");
-                
-                // Create temporary element for copy
-                var $temp = $("<textarea>");
-                $("body").append($temp);
-                $temp.val(allCommands).select();
-                document.execCommand("copy");
-                $temp.remove();
-                
-                // Show success message
-                Swal.fire({
-                    title: 'All Commands Copied!',
-                    text: 'All installation commands have been copied to your clipboard.',
-                    icon: 'success',
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#00ff00',
-                });
-            });
-        });
-        
-                        // Function to show about information
-    function showAbout() {
-        Swal.fire({
-            title: 'poisk-ls',
-            html: `<div class="developer-card">
-                    <p>Termux Cheatsheet Command Installation</p>
-                    <p>Developed by Poisk-ls</p>
-           <ul data-role="listview" data-inset="true" class="ui-nodisc-icon ui-alt-icon">
-           <li><a class="ui-btn ui-icon-action ui-btn-icon-left" href="https://github.com/poisk-ls">Github</a></li>
-           <li><a class="ui-btn ui-icon-action ui-btn-icon-left" href="https://www.facebook.com/poiskls">Facebook</a></li>
-           <li><a class="ui-btn ui-icon-action ui-btn-icon-left" href="https://www.linkedin.com/in/poisk-ls?trk=contact-info">Linkedin</a></li>
-              </ul>
-               </div>`,
-            icon: 'info',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#000',
-        });
+    const ctx = canvas.getContext('2d');
+    let cols = Math.floor(window.innerWidth / 18);
+    let ypos = Array(cols).fill(0);
+
+    function matrix () {
+      ctx.fillStyle = "#0002";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#0ff";
+      ctx.font = "15pt 'Share Tech Mono', monospace";
+      ypos.forEach((y, ind) => {
+        const text = String.fromCharCode(0x30A0 + Math.random() * 96);
+        ctx.fillText(text, ind * 18, y);
+        if (y > canvas.height + Math.random() * 10000) ypos[ind] = 0;
+        else ypos[ind] = y + 18;
+      });
     }
-    </script>
+    setInterval(matrix, 50);
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      cols = Math.floor(window.innerWidth / 18);
+      ypos = Array(cols).fill(0);
+    });
+
+    // Crazy glitch header animation
+    let header = document.getElementById('suspiciousHeader');
+    header.addEventListener('mouseenter', () => {
+      header.style.letterSpacing = "0.28em";
+      header.style.color = "#f0f";
+      header.style.textShadow = "0 0 30px #0ff, 0 0 16px #f0f";
+    });
+    header.addEventListener('mouseleave', () => {
+      header.style.letterSpacing = "0.12em";
+      header.style.color = "#0ff";
+      header.style.textShadow = "0 0 18px #f0f, 0 0 4px #fff";
+    });
+    header.addEventListener('click', () => {
+      header.textContent = "⚠️ HACK THE MATRIX ⚠️";
+      setTimeout(()=>header.textContent=" Modified by poisk-ls", 1700);
+    });
+  </script>
 </body>
 </html>
